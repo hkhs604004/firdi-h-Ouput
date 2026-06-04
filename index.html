@@ -1,757 +1,118 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人力產值 AI 智能戰情系統</title>
-    <meta name="description" content="以本地資料科學推理分析製造部門人力配置合理性，提供 AI 診斷、趨勢預測與異常警報。">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>企業經營數據分析門戶 - 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit', 'Inter', 'Noto Sans TC', 'sans-serif'] }
+                    fontFamily: {
+                        sans: ['Outfit', 'Noto Sans TC', 'sans-serif'],
+                    }
                 }
             }
         }
     </script>
     <style>
         body {
-            background-color: #030712;
-            background-image:
-                radial-gradient(at 0% 0%, rgba(59,130,246,0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(139,92,246,0.12) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(59,130,246,0.08) 0px, transparent 50%);
-            background-attachment: fixed;
+            background-color: #0d0f14;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(79, 127, 255, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(41, 224, 164, 0.1) 0px, transparent 50%);
+            min-height: 100vh;
         }
-        ::-webkit-scrollbar { width:6px; height:6px; }
-        ::-webkit-scrollbar-track { background:rgba(15,23,42,0.8); }
-        ::-webkit-scrollbar-thumb { background:rgba(59,130,246,0.4); border-radius:4px; }
-        ::-webkit-scrollbar-thumb:hover { background:rgba(59,130,246,0.6); }
-        .text-2xs { font-size:0.65rem; line-height:1rem; }
-        #drop-zone.dragover { border-color:#3b82f6; background:rgba(59,130,246,0.08); }
+        .glass-card {
+            background: rgba(20, 23, 32, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(79, 127, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f7fff 0%, #29e0a4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="text-slate-100 font-sans min-h-screen pb-12 antialiased">
+<body class="text-slate-200 font-sans antialiased">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <div class="inline-block p-3 bg-blue-500/10 rounded-2xl mb-6 border border-blue-500/20">
+                <i class="fa-solid fa-rocket text-4xl text-blue-500"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">企業經營數據分析門戶</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                基於 AI 驅動的決策支援系統，整合營運、銷售與人資的多維度動態戰情室。
+            </p>
+        </header>
 
-<!-- Navbar -->
-<header class="sticky top-0 z-50 backdrop-blur-md border-b border-slate-800/80 px-6 py-4" style="background-color:rgba(3,7,18,0.75)">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-            <div class="bg-gradient-to-tr from-blue-600 to-violet-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/25">
-                <i class="fa-solid fa-chart-line text-2xl text-white"></i>
-            </div>
-            <div>
-                <h1 class="text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-400 bg-clip-text text-transparent">
-                    人力產值 AI 智能戰情系統
-                </h1>
-                <p class="text-xs text-slate-400 font-medium mt-0.5">Antigravity Local Diagnostic Engine v2.0 · GitHub Pages Static Edition</p>
-            </div>
+        <!-- Main Portal Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <!-- KPI Dashboard AI -->
+            <a href="kpi_dashboard_ai.html" class="glass-card rounded-3xl p-8 flex flex-col group">
+                <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:bg-blue-500/20 transition-colors">
+                    <i class="fa-solid fa-chart-pie text-2xl text-blue-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">月度經營 KPI 儀表</h3>
+                <p class="text-slate-400 text-sm mb-6 flex-grow">
+                    整合營收、良率與客訴數據，內建 Gemini AI 自動化洞察與對話助手。
+                </p>
+                <div class="flex items-center text-blue-400 font-bold text-sm">
+                    進入系統 <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- Sales War Room -->
+            <a href="SalesWarRoom_2026.html" class="glass-card rounded-3xl p-8 flex flex-col group">
+                <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:bg-emerald-500/20 transition-colors">
+                    <i class="fa-solid fa-money-bill-trend-up text-2xl text-emerald-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">新品上市業務追蹤</h3>
+                <p class="text-slate-400 text-sm mb-6 flex-grow">
+                    2026 年度銷售戰情室，即時監控業務達標率、銷售趨勢與熱圖分析。
+                </p>
+                <div class="flex items-center text-emerald-400 font-bold text-sm">
+                    進入系統 <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- HR Productivity -->
+            <a href="hr_productivity.html" class="glass-card rounded-3xl p-8 flex flex-col group">
+                <div class="w-14 h-14 bg-violet-500/10 rounded-2xl flex items-center justify-center mb-6 border border-violet-500/20 group-hover:bg-violet-500/20 transition-colors">
+                    <i class="fa-solid fa-users-gear text-2xl text-violet-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">人力產值 AI 診斷</h3>
+                <p class="text-slate-400 text-sm mb-6 flex-grow">
+                    製造部門人力配置合理性分析，提供加班效率預測與過勞異常警報。
+                </p>
+                <div class="flex items-center text-violet-400 font-bold text-sm">
+                    進入系統 <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
         </div>
-        <div class="flex items-center gap-4">
-            <span id="engine-status" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-700/50 text-slate-400 border border-slate-700">
-                <span class="h-2 w-2 rounded-full bg-slate-500"></span> 等待資料載入
-            </span>
-            <button onclick="refreshData()" class="px-3.5 py-2 text-sm font-semibold rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-slate-700/80 transition-all flex items-center gap-2">
-                <i class="fa-solid fa-rotate text-xs"></i> 重新載入
-            </button>
-        </div>
+
+        <!-- System Stats Footer -->
+        <footer class="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-slate-500 text-sm font-mono">
+                SYSTEM STATUS: <span class="text-emerald-500">● ONLINE</span> | VERSION 2.1.0
+            </div>
+            <div class="flex gap-6">
+                <a href="https://github.com" target="_blank" class="text-slate-500 hover:text-white transition-colors">
+                    <i class="fa-brands fa-github text-xl"></i>
+                </a>
+            </div>
+        </footer>
     </div>
-</header>
-
-<!-- Upload Banner -->
-<div id="upload-banner" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-    <div id="drop-zone"
-         class="border-2 border-dashed border-slate-700 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-500/60 transition-all duration-300"
-         style="background:rgba(15,23,42,0.3)"
-         onclick="document.getElementById('csv-file-input').click()"
-         ondragover="event.preventDefault();this.classList.add('dragover')"
-         ondragleave="this.classList.remove('dragover')"
-         ondrop="handleDrop(event)">
-        <div class="flex flex-col items-center gap-4">
-            <div class="p-5 bg-blue-500/10 rounded-2xl border border-blue-500/20">
-                <i class="fa-solid fa-file-csv text-5xl text-blue-400"></i>
-            </div>
-            <div>
-                <p class="text-lg font-bold text-white mb-1">拖曳或點擊上傳 MGT-0604.csv</p>
-                <p class="text-sm text-slate-400">支援 BIG5 / CP950 / UTF-8 編碼，自動偵測</p>
-            </div>
-            <div class="flex flex-wrap justify-center gap-2 text-xs text-slate-500">
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">月份</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">部門</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">人數</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">加班時數</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">平均每人加班時數</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">產值 / 目標產值</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">達標率</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700">加班效率</span>
-            </div>
-            <button class="mt-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-blue-600/30">
-                <i class="fa-solid fa-upload mr-2"></i>選擇 CSV 檔案
-            </button>
-            <input id="csv-file-input" type="file" accept=".csv" class="hidden" onchange="handleFileInput(event)">
-        </div>
-    </div>
-    <div id="load-error" class="hidden mt-4 p-4 bg-red-900/30 border border-red-500/30 rounded-xl text-sm text-red-400"></div>
-</div>
-
-<!-- Main Dashboard (hidden until CSV loaded) -->
-<main id="dashboard" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-
-    <!-- Summary Cards -->
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 relative overflow-hidden group">
-            <div class="absolute -right-4 -bottom-4 text-8xl text-slate-800/10 group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-coins"></i></div>
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-xl"><i class="fa-solid fa-coins text-xl"></i></div>
-                <div>
-                    <p class="text-sm font-medium text-slate-400">累計產值 (TWD)</p>
-                    <h3 id="total-output" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight text-white">-</h3>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-xs text-slate-400 gap-1">
-                <i class="fa-solid fa-calendar-days text-slate-500"></i>
-                <span id="data-period">歷史資料期間</span>
-            </div>
-        </div>
-
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 hover:border-violet-500/30 transition-all duration-300 relative overflow-hidden group">
-            <div class="absolute -right-4 -bottom-4 text-8xl text-slate-800/10 group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-bullseye"></i></div>
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-violet-500/10 text-violet-400 border border-violet-500/20 rounded-xl"><i class="fa-solid fa-bullseye text-xl"></i></div>
-                <div>
-                    <p class="text-sm font-medium text-slate-400">總體目標達成率</p>
-                    <h3 id="achievement-rate" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight text-white">-</h3>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-xs text-slate-400 gap-1">
-                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                <span>目標 vs 產值之加權平均</span>
-            </div>
-        </div>
-
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 hover:border-teal-500/30 transition-all duration-300 relative overflow-hidden group">
-            <div class="absolute -right-4 -bottom-4 text-8xl text-slate-800/10 group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-users"></i></div>
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl"><i class="fa-solid fa-users text-xl"></i></div>
-                <div>
-                    <p class="text-sm font-medium text-slate-400">最新月份人力 (人)</p>
-                    <h3 id="latest-headcount" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight text-white">-</h3>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-xs text-slate-400 gap-1">
-                <i class="fa-solid fa-clock text-slate-500"></i>
-                <span>截至月份：<span id="latest-month">-</span></span>
-            </div>
-        </div>
-
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group">
-            <div class="absolute -right-4 -bottom-4 text-8xl text-slate-800/10 group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-business-time"></i></div>
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-xl"><i class="fa-solid fa-business-time text-xl"></i></div>
-                <div>
-                    <p class="text-sm font-medium text-slate-400">最新人均加班時數 (小時)</p>
-                    <h3 id="latest-avg-ot" class="text-2xl md:text-3xl font-bold mt-1 tracking-tight text-white">-</h3>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center text-xs text-slate-400 gap-1">
-                <i id="ot-icon" class="fa-solid fa-circle-exclamation text-amber-500"></i>
-                <span id="ot-status">最新月份全體平均</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Grid -->
-    <section class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
-        <!-- Sidebar -->
-        <div class="lg:col-span-1 flex flex-col gap-6">
-            <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-                <h2 class="text-md font-bold tracking-wide text-slate-200 mb-5 flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-blue-500"></i> AI 本地診斷門檻設定
-                </h2>
-                <div class="mb-5">
-                    <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
-                        <span>🚨 過載過勞加班門檻</span>
-                        <span id="burnout-label" class="text-red-400 font-mono">22 小時</span>
-                    </div>
-                    <input id="burnout-slider" type="range" min="15" max="35" step="0.5" value="22" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-red-500" oninput="updateSliders()">
-                </div>
-                <div class="mb-5">
-                    <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
-                        <span>⚠️ 一般加班合理上限</span>
-                        <span id="max-ot-label" class="text-amber-400 font-mono">20 小時</span>
-                    </div>
-                    <input id="max-ot-slider" type="range" min="10" max="30" step="0.5" value="20" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500" oninput="updateSliders()">
-                </div>
-                <div class="mb-5">
-                    <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
-                        <span>📉 產出最低達標要求</span>
-                        <span id="min-ach-label" class="text-blue-400 font-mono">90%</span>
-                    </div>
-                    <input id="min-ach-slider" type="range" min="70" max="110" step="1" value="90" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500" oninput="updateSliders()">
-                </div>
-                <div class="mb-5">
-                    <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
-                        <span>💤 人力閒置時數門檻</span>
-                        <span id="idle-label" class="text-yellow-400 font-mono">8 小時</span>
-                    </div>
-                    <input id="idle-slider" type="range" min="2" max="12" step="0.5" value="8" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-yellow-500" oninput="updateSliders()">
-                </div>
-                <div class="mt-6 pt-4 border-t border-slate-800/80 text-2xs text-slate-400 flex flex-col gap-1.5">
-                    <p class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-red-500 block"></span>過度加班：加班 &gt; 過載 且 達標 &gt;= 最低</p>
-                    <p class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-amber-500 block"></span>配置低效：加班 &gt; 上限 且 達標 &lt; 最低</p>
-                    <p class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-yellow-500 block"></span>人力閒置：加班 &lt; 閒置 且 達標 &lt; 最低</p>
-                    <p class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 block"></span>高效精實：加班 &lt; 閒置 且 達標 &gt;= 100%</p>
-                </div>
-            </div>
-
-            <div class="bg-slate-900/50 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
-                <h2 class="text-md font-bold tracking-wide text-slate-200 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-industry text-violet-500"></i> 特定部門探針
-                </h2>
-                <p class="text-xs text-slate-400 mb-3">切換部門以查看專屬的人力 vs 產值關聯度以及趨勢預測：</p>
-                <select id="dept-select" onchange="changeDepartment()" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 font-semibold focus:outline-none focus:border-violet-500 transition-colors"></select>
-            </div>
-        </div>
-
-        <!-- Right Content -->
-        <div class="lg:col-span-3 flex flex-col gap-6">
-            <div class="flex border-b border-slate-800 gap-4">
-                <button id="tab-btn-overall" onclick="switchTab('overall')" class="py-3 px-5 text-sm font-bold border-b-2 border-blue-500 text-blue-400 transition-all">
-                    <i class="fa-solid fa-chart-pie mr-1.5"></i> 總體診斷與關聯分析
-                </button>
-                <button id="tab-btn-trends" onclick="switchTab('trends')" class="py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all">
-                    <i class="fa-solid fa-chart-line mr-1.5"></i> 趨勢對比與 AI 預測
-                </button>
-            </div>
-
-            <!-- Tab 1 -->
-            <div id="tab-content-overall" class="flex flex-col gap-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-5">
-                        <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-heart-pulse text-emerald-500"></i> 全期樣本健康狀態分佈
-                        </h3>
-                        <div id="pie-chart" class="w-full h-72"></div>
-                    </div>
-                    <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-5">
-                        <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-diagram-project text-blue-500"></i>
-                            <span id="scatter-title">-</span>&nbsp;人數 vs 產值關聯散佈圖
-                        </h3>
-                        <div id="scatter-chart" class="w-full h-72"></div>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-r from-blue-950/40 via-violet-950/20 to-slate-900/40 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
-                    <div class="absolute right-6 top-6 text-7xl text-blue-500/10"><i class="fa-solid fa-microchip"></i></div>
-                    <h3 class="text-sm font-bold text-blue-400 tracking-wider uppercase mb-2">AI 智能關聯洞察報告</h3>
-                    <p id="correlation-text" class="text-sm leading-relaxed text-slate-300">載入中...</p>
-                    <div class="mt-4 flex items-center gap-6">
-                        <div class="text-xs">
-                            <span class="text-slate-400 block">皮爾森相關係數 (R)</span>
-                            <span id="r-value" class="text-lg font-bold text-white font-mono">-</span>
-                        </div>
-                        <div class="text-xs border-l border-slate-800 pl-6">
-                            <span class="text-slate-400 block">擬合方程式 (斜率 m)</span>
-                            <span id="slope-value" class="text-lg font-bold text-white font-mono">-</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 2 -->
-            <div id="tab-content-trends" class="hidden flex flex-col gap-6">
-                <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-                    <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-timeline text-indigo-500"></i>
-                        <span id="trend-title">-</span>&nbsp;歷史人力 vs 產值月度對比趨勢
-                    </h3>
-                    <div id="trend-chart" class="w-full h-80"></div>
-                </div>
-                <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-5 gap-3">
-                        <div>
-                            <h3 class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                                <i class="fa-solid fa-forward-fast text-violet-500"></i> AI 趨勢外推預測 (未來 3 個月)
-                            </h3>
-                            <p class="text-2xs text-slate-400 mt-0.5">基於最近 12 個月之短期發展速度，利用本地線性回歸擬合計算</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs bg-slate-800 px-3 py-1 rounded-full border border-slate-700">人力趨勢: <span id="hc-trend-badge" class="font-bold text-white">-</span></span>
-                            <span class="text-xs bg-slate-800 px-3 py-1 rounded-full border border-slate-700">產值趨勢: <span id="out-trend-badge" class="font-bold text-white">-</span></span>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="forecast-cards"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Alerts -->
-    <section class="mb-8">
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6">
-            <h2 class="text-md font-bold tracking-wide text-slate-200 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> AI 配置診斷異常警報 (最近 5 筆異常)
-            </h2>
-            <div id="alert-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-        </div>
-    </section>
-
-    <!-- Table -->
-    <section class="mb-8">
-        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
-                <div>
-                    <h2 class="text-lg font-bold text-white tracking-tight">生產歷史明細與診斷日誌</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">顯示已載入之所有月份與部門明細，支持動態過濾</p>
-                </div>
-                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <div class="relative flex-grow md:flex-grow-0">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs text-slate-500"></i>
-                        <input id="table-search" type="text" placeholder="搜尋部門或月份..." oninput="filterTable()" class="pl-9 pr-4 py-2 w-full md:w-56 text-sm bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-slate-200">
-                    </div>
-                    <select id="table-filter-status" onchange="filterTable()" class="px-3 py-2 text-sm bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-slate-200">
-                        <option value="">所有健康狀態</option>
-                        <option value="合理配置">合理配置</option>
-                        <option value="過度加班">過度加班</option>
-                        <option value="配置低效">配置低效</option>
-                        <option value="人力閒置">人力閒置</option>
-                        <option value="高效精實">高效精實</option>
-                    </select>
-                    <button onclick="downloadCSV()" class="px-4 py-2 text-sm font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-download"></i> 導出 CSV
-                    </button>
-                </div>
-            </div>
-            <div class="overflow-x-auto border border-slate-800/80 rounded-xl">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="bg-slate-800/50 text-slate-400 uppercase text-2xs tracking-wider border-b border-slate-800">
-                        <tr>
-                            <th class="px-5 py-3.5">月份</th>
-                            <th class="px-5 py-3.5">部門</th>
-                            <th class="px-5 py-3.5 text-right">人數 (人)</th>
-                            <th class="px-5 py-3.5 text-right">加班 (hrs)</th>
-                            <th class="px-5 py-3.5 text-right">人均加班 (hrs)</th>
-                            <th class="px-5 py-3.5 text-right">產值 (TWD)</th>
-                            <th class="px-5 py-3.5 text-right">達標率</th>
-                            <th class="px-5 py-3.5 text-right">加班效率</th>
-                            <th class="px-5 py-3.5 text-center">AI 診斷</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body" class="divide-y divide-slate-800/60"></tbody>
-                </table>
-            </div>
-            <div class="mt-4 flex justify-between items-center text-xs text-slate-400">
-                <span id="table-count-info">顯示 0 筆資料</span>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer class="max-w-7xl mx-auto px-6 text-center text-xs text-slate-500 border-t border-slate-800/60 pt-6 mt-8">
-    <p>© 2026 人力產值 AI 戰情系統 · GitHub Pages Static Edition · 本地資料科學推理與診斷引擎</p>
-</footer>
-
-<script>
-// ── Global State ───────────────────────────────────────────────────────────────
-let allRecords = [], diagnosisData = [], departments = [], currentDept = '';
-let params = { max_ot:20.0, min_ach:90.0, burnout_ot:22.0, idle_ot:8.0 };
-let pieChart=null, scatterChart=null, trendChart=null;
-
-// ── File Handling ──────────────────────────────────────────────────────────────
-function handleDrop(e){
-    e.preventDefault();
-    document.getElementById('drop-zone').classList.remove('dragover');
-    const f=e.dataTransfer.files[0]; if(f) readCsvFile(f);
-}
-function handleFileInput(e){ const f=e.target.files[0]; if(f) readCsvFile(f); }
-
-function readCsvFile(file){
-    Papa.parse(file,{
-        header:true, skipEmptyLines:true, encoding:'Big5',
-        complete(res){
-            if(res.data.length===0){ showError('CSV 解析失敗，資料為空'); return; }
-            const required=['月份','部門','人數','平均每人加班時數','產值','目標產值','達標率','加班效率'];
-            const cols=Object.keys(res.data[0]||{});
-            const miss=required.filter(c=>!cols.includes(c));
-            if(miss.length){ showError('CSV 欄位缺失：'+miss.join(', ')); return; }
-            processData(res.data);
-        },
-        error(err){ showError('檔案讀取錯誤：'+err.message); }
-    });
-}
-
-function showError(msg){
-    const el=document.getElementById('load-error');
-    el.textContent=msg; el.classList.remove('hidden');
-}
-
-// ── Data Processing ────────────────────────────────────────────────────────────
-function parseNum(v){
-    if(v===null||v===undefined) return 0;
-    const n=parseFloat(String(v).replace('%','').replace(/,/g,'').trim());
-    return isNaN(n)?0:n;
-}
-function fmtMonth(raw){
-    const m=String(raw).trim().match(/(\d{4})[\/\-](\d{1,2})/);
-    return m?`${m[1]}-${m[2].padStart(2,'0')}`:String(raw).trim();
-}
-
-function processData(rows){
-    allRecords=rows.map(r=>({
-        month: fmtMonth(r['月份']),
-        dept:  String(r['部門']||'').trim(),
-        headcount: Math.round(parseNum(r['人數'])),
-        overtime:  parseNum(r['加班時數']||0),
-        overtimeAvg: parseNum(r['平均每人加班時數']),
-        output:  parseNum(r['產值']),
-        target:  parseNum(r['目標產值']),
-        achievementRate: parseNum(r['達標率']),
-        overtimeEfficiency: parseNum(r['加班效率']),
-    })).sort((a,b)=>a.month.localeCompare(b.month));
-
-    departments=[...new Set(allRecords.map(r=>r.dept))].sort();
-    currentDept=departments[0];
-
-    document.getElementById('upload-banner').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-
-    const badge=document.getElementById('engine-status');
-    badge.className='inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-    badge.innerHTML='<span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>本地推論引擎已啟用';
-
-    initCharts();
-    populateDeptSelect();
-    updateSummaryCards();
-    runDiagnosticPipeline();
-}
-
-// ── Summary Cards ──────────────────────────────────────────────────────────────
-function updateSummaryCards(){
-    const totalOut=allRecords.reduce((s,r)=>s+r.output,0);
-    const totalTgt=allRecords.reduce((s,r)=>s+r.target,0);
-    const ach=totalTgt>0?(totalOut/totalTgt*100):0;
-    const latestMonth=allRecords[allRecords.length-1].month;
-    const latestRecs=allRecords.filter(r=>r.month===latestMonth);
-    const latestHC=latestRecs.reduce((s,r)=>s+r.headcount,0);
-    const latestAvgOt=latestRecs.length?latestRecs.reduce((s,r)=>s+r.overtimeAvg,0)/latestRecs.length:0;
-    const months=[...new Set(allRecords.map(r=>r.month))].sort();
-
-    document.getElementById('total-output').textContent='$'+totalOut.toLocaleString('zh-TW',{maximumFractionDigits:0});
-    document.getElementById('achievement-rate').textContent=ach.toFixed(2)+'%';
-    document.getElementById('latest-headcount').textContent=latestHC;
-    document.getElementById('latest-avg-ot').textContent=latestAvgOt.toFixed(2);
-    document.getElementById('latest-month').textContent=latestMonth;
-    document.getElementById('data-period').textContent=`${months[0]} ～ ${months[months.length-1]}，共 ${months.length} 個月`;
-
-    const otIcon=document.getElementById('ot-icon'), otStatus=document.getElementById('ot-status');
-    if(latestAvgOt>22){ otIcon.className='fa-solid fa-circle-exclamation text-red-500'; otStatus.innerHTML="<span class='text-red-400 font-semibold'>過度加班警報</span>"; }
-    else if(latestAvgOt>20){ otIcon.className='fa-solid fa-circle-exclamation text-amber-500'; otStatus.innerHTML="<span class='text-amber-400 font-semibold'>加班偏高警示</span>"; }
-    else{ otIcon.className='fa-solid fa-circle-check text-emerald-400'; otStatus.innerHTML="<span class='text-emerald-400'>加班量合理</span>"; }
-}
-
-// ── Statistics Helpers ─────────────────────────────────────────────────────────
-function mean(a){ return a.length?a.reduce((s,v)=>s+v,0)/a.length:0; }
-
-function pearsonR(xs,ys){
-    if(xs.length<2) return 0;
-    const mx=mean(xs),my=mean(ys);
-    let num=0,dx2=0,dy2=0;
-    for(let i=0;i<xs.length;i++){
-        const dx=xs[i]-mx,dy=ys[i]-my;
-        num+=dx*dy; dx2+=dx*dx; dy2+=dy*dy;
-    }
-    const d=Math.sqrt(dx2*dy2);
-    return d===0?0:num/d;
-}
-
-function linReg(xs,ys){
-    if(xs.length<2) return {slope:0,intercept:0};
-    const mx=mean(xs),my=mean(ys);
-    let num=0,den=0;
-    for(let i=0;i<xs.length;i++){ num+=(xs[i]-mx)*(ys[i]-my); den+=(xs[i]-mx)**2; }
-    const slope=den===0?0:num/den;
-    return {slope, intercept:my-slope*mx};
-}
-
-// ── AI Diagnostic Engine ───────────────────────────────────────────────────────
-function diagnoseRecord(r){
-    const {burnout_ot,max_ot,min_ach,idle_ot}=params;
-    const ot=r.overtimeAvg, ach=r.achievementRate;
-    let status,color,desc,rec;
-
-    if(ot>burnout_ot && ach>=min_ach){
-        status='過度加班'; color='red';
-        desc=`部門在該月達標率達 ${ach.toFixed(1)}%，但平均每人加班達 ${ot.toFixed(1)} 小時。員工工作負荷極高，面臨過勞與流失風險。`;
-        rec='建議增補 1-2 名正職或彈性調配其他空閒部門人力，分攤高強度產線壓力。';
-    } else if(ot>max_ot && ach<min_ach){
-        status='配置低效'; color='orange';
-        desc=`平均每人加班高達 ${ot.toFixed(1)} 小時，但達標率僅 ${ach.toFixed(1)}%。呈現「高加班、低產出」的低效狀態。`;
-        rec='應排查製程瓶頸、設備稼動異常或材料供應延誤，盲目加班並無法有效提升產出。';
-    } else if(ot<idle_ot && ach<min_ach){
-        status='人力閒置'; color='yellow';
-        desc=`達標率僅 ${ach.toFixed(1)}% 且平均每人加班僅 ${ot.toFixed(1)} 小時，產能利用率偏低，產值未釋放。`;
-        rec='需檢查訂單排程或稼動率管理。若屬訂單不足，可考慮跨部門支援或技能培訓；若為管理鬆散，應優化派工。';
-    } else if(ot<idle_ot && ach>=100.0){
-        status='高效精實'; color='emerald';
-        desc=`達標率達 ${ach.toFixed(1)}%，且加班極少（平均 ${ot.toFixed(1)} 小時），人力配置高效流暢。`;
-        rec='維持現行管理模式，可作為示範部門。具備多餘產能，可承接部分突發性高價值訂單。';
-    } else {
-        status='合理配置'; color='green';
-        desc=`達標率為 ${ach.toFixed(1)}%，平均每人加班 ${ot.toFixed(1)} 小時，人力配置與產值產出呈現健康平衡。`;
-        rec='目前配置良好，持續監控設備稼動率與生產線日常維護即可。';
-    }
-    return {...r,status,color,description:desc,recommendation:rec};
-}
-
-function runDiagnosticPipeline(){
-    diagnosisData=allRecords.map(r=>diagnoseRecord(r));
-    const counts={};
-    diagnosisData.forEach(d=>{ counts[d.status]=(counts[d.status]||0)+1; });
-    drawPieChart(counts);
-    filterTable();
-    populateAlerts();
-    refreshDepartmentSpecifics();
-}
-
-// ── Department Analytics ───────────────────────────────────────────────────────
-function refreshDepartmentSpecifics(){
-    if(!currentDept) return;
-    const recs=allRecords.filter(r=>r.dept===currentDept);
-    if(!recs.length) return;
-
-    const xs=recs.map(r=>r.headcount), ys=recs.map(r=>r.output);
-    const r=pearsonR(xs,ys), reg=linReg(xs,ys);
-
-    let corrText;
-    if(r>0.6) corrText=`該部門人數與產值呈強烈正相關 (R=${r.toFixed(2)})，增加人力能直接且顯著地拉升產值。若面臨產能瓶頸，應優先考慮招募新血。`;
-    else if(r>0.2) corrText=`該部門人數與產值呈中度相關 (R=${r.toFixed(2)})。除擴充人力外，優化工作流程或提升設備自動化水準對產值的增益可能更佳。`;
-    else corrText=`該部門人數與產值相關性極低 (R=${r.toFixed(2)})。產值大小受人數影響不大，可能是自動化程度高，盲目增員無法提高產值。`;
-
-    document.getElementById('correlation-text').innerHTML=`<strong class="text-white">【${currentDept}分析結論】</strong>${corrText}<br><span class="text-xs text-slate-400 mt-2 block">分析師建議：當 R &gt; 0.6 代表產值增長主要依賴人力填充，需防範人員缺口；當相關性低時，應轉向精進生產工具與工作安排。</span>`;
-    document.getElementById('r-value').textContent=r.toFixed(4);
-    document.getElementById('slope-value').textContent=`y = ${reg.slope.toLocaleString('zh-TW',{maximumFractionDigits:1})}x + (${reg.intercept.toLocaleString('zh-TW',{maximumFractionDigits:0})})`;
-
-    drawScatterChart(recs,r,reg);
-    drawTrendChart(recs);
-
-    // Forecast
-    const rec12=recs.slice(-12), idx=rec12.map((_,i)=>i);
-    const regHC=linReg(idx,rec12.map(r=>r.headcount));
-    const regOut=linReg(idx,rec12.map(r=>r.output));
-    const n=rec12.length, lastMo=rec12[rec12.length-1].month;
-
-    document.getElementById('hc-trend-badge').textContent=regHC.slope>0.1?'上升':(regHC.slope<-0.1?'下降':'穩定');
-    document.getElementById('out-trend-badge').textContent=regOut.slope>10000?'上升':(regOut.slope<-10000?'下降':'穩定');
-
-    const fc=document.getElementById('forecast-cards'); fc.innerHTML='';
-    for(let step=1;step<=3;step++){
-        const pi=n+step-1;
-        const predHC=Math.max(1,Math.round(regHC.slope*pi+regHC.intercept));
-        const predOut=Math.max(0,regOut.slope*pi+regOut.intercept);
-        const mo=addMonths(lastMo,step);
-        const card=document.createElement('div');
-        card.className='bg-slate-800/40 border border-slate-700/60 rounded-xl p-4 flex flex-col justify-between hover:border-violet-500/20 transition-all';
-        card.innerHTML=`<div>
-            <span class="text-2xs font-bold text-violet-400 tracking-wider block mb-1">月份：${mo} (${step}M 預估)</span>
-            <div class="flex justify-between items-baseline mb-2">
-                <span class="text-slate-400 text-xs">預估人力配置</span>
-                <span class="text-md font-bold text-white">${predHC} 人</span>
-            </div>
-            <div class="flex justify-between items-baseline">
-                <span class="text-slate-400 text-xs">預估產出價值</span>
-                <span class="text-md font-bold text-blue-400">$${predOut.toLocaleString('zh-TW',{maximumFractionDigits:0})}</span>
-            </div></div>`;
-        fc.appendChild(card);
-    }
-}
-
-function addMonths(yyyymm,n){
-    const [y,m]=yyyymm.split('-').map(Number);
-    const d=new Date(y,m-1+n,1);
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-}
-
-// ── Charts ─────────────────────────────────────────────────────────────────────
-function initCharts(){
-    const opt={renderer:'canvas',backgroundColor:'transparent'};
-    pieChart     =echarts.init(document.getElementById('pie-chart'),'dark',opt);
-    scatterChart =echarts.init(document.getElementById('scatter-chart'),'dark',opt);
-    trendChart   =echarts.init(document.getElementById('trend-chart'),'dark',opt);
-    window.addEventListener('resize',()=>{pieChart&&pieChart.resize();scatterChart&&scatterChart.resize();trendChart&&trendChart.resize();});
-}
-
-function drawPieChart(counts){
-    const cmap={'過度加班':'#ef4444','配置低效':'#f59e0b','人力閒置':'#eab308','高效精實':'#059669','合理配置':'#10b981'};
-    const data=Object.entries(counts).map(([k,v])=>({name:k,value:v,itemStyle:{color:cmap[k]||'#6366f1'}}));
-    pieChart.setOption({
-        tooltip:{trigger:'item',formatter:'{b}: {c} 次 ({d}%)'},
-        legend:{orient:'horizontal',bottom:0,textStyle:{color:'#cbd5e1',fontSize:11}},
-        series:[{name:'健康狀態',type:'pie',radius:['45%','70%'],center:['50%','42%'],
-            avoidLabelOverlap:false,
-            itemStyle:{borderRadius:6,borderColor:'#0f172a',borderWidth:2},
-            label:{show:false},
-            emphasis:{label:{show:true,fontSize:13,fontWeight:'bold',formatter:'{b}\n{c} 筆'}},
-            data}]
-    });
-}
-
-function drawScatterChart(recs,r,reg){
-    const pts=recs.map(r=>[r.headcount,r.output,r.month]);
-    const hcs=recs.map(r=>r.headcount);
-    const minH=Math.min(...hcs)-1, maxH=Math.max(...hcs)+1;
-    const line=[[minH,reg.slope*minH+reg.intercept],[maxH,reg.slope*maxH+reg.intercept]];
-    scatterChart.setOption({
-        tooltip:{trigger:'item',formatter:p=>{
-            if(p.seriesType==='scatter') return `月份: ${p.value[2]}<br>人數: ${p.value[0]} 人<br>產值: $${p.value[1].toLocaleString()}`;
-            return `趨勢線 (R=${r.toFixed(2)})`;
-        }},
-        grid:{left:'3%',right:'8%',bottom:'10%',top:'8%',containLabel:true},
-        xAxis:{name:'人數',type:'value',splitLine:{lineStyle:{color:'#334155',type:'dashed'}},axisLabel:{color:'#cbd5e1'},nameTextStyle:{color:'#94a3b8'}},
-        yAxis:{name:'產值',type:'value',splitLine:{lineStyle:{color:'#334155',type:'dashed'}},axisLabel:{color:'#cbd5e1',formatter:v=>(v/1000000).toFixed(1)+'M'},nameTextStyle:{color:'#94a3b8'}},
-        series:[
-            {type:'scatter',data:pts,symbolSize:10,itemStyle:{color:'#3b82f6',shadowColor:'#3b82f6',shadowBlur:8}},
-            {type:'line',data:line,showSymbol:false,lineStyle:{color:'#a78bfa',width:2.5},tooltip:{trigger:'item'}}
-        ]
-    });
-}
-
-function drawTrendChart(recs){
-    trendChart.setOption({
-        tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
-        legend:{data:['人力人數','月產值'],textStyle:{color:'#cbd5e1'}},
-        grid:{left:'3%',right:'4%',bottom:'10%',top:'12%',containLabel:true},
-        xAxis:{type:'category',data:recs.map(r=>r.month),axisLabel:{color:'#cbd5e1',rotate:45},splitLine:{show:false}},
-        yAxis:[
-            {type:'value',name:'人數 (人)',splitLine:{lineStyle:{color:'#334155',type:'dashed'}},axisLabel:{color:'#cbd5e1'},nameTextStyle:{color:'#94a3b8'}},
-            {type:'value',name:'產值 (M)',splitLine:{show:false},axisLabel:{color:'#cbd5e1',formatter:v=>(v/1000000).toFixed(1)+'M'},nameTextStyle:{color:'#94a3b8'}}
-        ],
-        series:[
-            {name:'人力人數',type:'bar',data:recs.map(r=>r.headcount),
-                itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#3b82f6'},{offset:1,color:'#1d4ed8'}]),borderRadius:[4,4,0,0]}},
-            {name:'月產值',type:'line',yAxisIndex:1,data:recs.map(r=>r.output),
-                symbol:'circle',symbolSize:6,lineStyle:{color:'#f59e0b',width:3},itemStyle:{color:'#f59e0b'}}
-        ]
-    });
-}
-
-// ── UI ─────────────────────────────────────────────────────────────────────────
-function populateDeptSelect(){
-    const sel=document.getElementById('dept-select');
-    sel.innerHTML='';
-    departments.forEach((d,i)=>{
-        const o=document.createElement('option'); o.value=d; o.textContent=d;
-        if(i===0) o.selected=true; sel.appendChild(o);
-    });
-    document.getElementById('scatter-title').textContent=currentDept;
-    document.getElementById('trend-title').textContent=currentDept;
-}
-
-function updateSliders(){
-    params.burnout_ot=parseFloat(document.getElementById('burnout-slider').value);
-    params.max_ot    =parseFloat(document.getElementById('max-ot-slider').value);
-    params.min_ach   =parseFloat(document.getElementById('min-ach-slider').value);
-    params.idle_ot   =parseFloat(document.getElementById('idle-slider').value);
-    document.getElementById('burnout-label').textContent=params.burnout_ot+' 小時';
-    document.getElementById('max-ot-label').textContent =params.max_ot+' 小時';
-    document.getElementById('min-ach-label').textContent=params.min_ach+'%';
-    document.getElementById('idle-label').textContent   =params.idle_ot+' 小時';
-}
-
-let slideTO=null;
-window.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('input[type="range"]').forEach(sl=>{
-        sl.addEventListener('input',()=>{
-            if(slideTO) clearTimeout(slideTO);
-            slideTO=setTimeout(()=>{ if(diagnosisData.length) runDiagnosticPipeline(); },200);
-        });
-    });
-    autoLoadCsv();
-});
-
-async function autoLoadCsv(){
-    try{
-        const res=await fetch('MGT-0604.csv');
-        if(!res.ok) return;
-        const txt=await res.text();
-        const pr=Papa.parse(txt,{header:true,skipEmptyLines:true});
-        if(pr.data.length>0 && pr.data[0]['部門']) processData(pr.data);
-    } catch(e){ /* silent – keep upload UI */ }
-}
-
-function changeDepartment(){
-    currentDept=document.getElementById('dept-select').value;
-    document.getElementById('scatter-title').textContent=currentDept;
-    document.getElementById('trend-title').textContent=currentDept;
-    refreshDepartmentSpecifics();
-}
-
-function switchTab(tab){
-    const io=tab==='overall';
-    document.getElementById('tab-btn-overall').className =io?'py-3 px-5 text-sm font-bold border-b-2 border-blue-500 text-blue-400 transition-all':'py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
-    document.getElementById('tab-btn-trends').className  =!io?'py-3 px-5 text-sm font-bold border-b-2 border-blue-500 text-blue-400 transition-all':'py-3 px-5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all';
-    document.getElementById('tab-content-overall').classList.toggle('hidden',!io);
-    document.getElementById('tab-content-trends').classList.toggle('hidden',io);
-    setTimeout(()=>{ if(io){pieChart&&pieChart.resize();scatterChart&&scatterChart.resize();}else{trendChart&&trendChart.resize();} },100);
-}
-
-function refreshData(){
-    if(allRecords.length) runDiagnosticPipeline();
-    else{ document.getElementById('upload-banner').classList.remove('hidden'); document.getElementById('dashboard').classList.add('hidden'); }
-}
-
-// ── Alerts ─────────────────────────────────────────────────────────────────────
-function populateAlerts(){
-    const alerts=diagnosisData.filter(d=>['過度加班','配置低效','人力閒置'].includes(d.status)).slice(-5).reverse();
-    const c=document.getElementById('alert-container'); c.innerHTML='';
-    if(!alerts.length){ c.innerHTML=`<div class="col-span-full py-8 text-center text-slate-500 border border-dashed border-slate-800 rounded-xl"><i class="fa-solid fa-circle-check text-2xl text-emerald-400 mb-2"></i><p class="text-sm font-semibold">健康無警訊：目前參數設定下無配置低效或過勞警訊。</p></div>`; return; }
-    const cm={'過度加班':{cls:'from-red-500/10 to-red-600/5 border-red-500/20',txt:'text-red-400',icon:'fa-solid fa-triangle-exclamation'},
-              '配置低效':{cls:'from-amber-500/10 to-amber-600/5 border-amber-500/20',txt:'text-amber-400',icon:'fa-solid fa-triangle-exclamation'},
-              '人力閒置':{cls:'from-yellow-500/10 to-yellow-600/5 border-yellow-500/20',txt:'text-yellow-400',icon:'fa-solid fa-circle-exclamation'}};
-    alerts.forEach(a=>{
-        const s=cm[a.status]; const card=document.createElement('div');
-        card.className=`bg-gradient-to-br ${s.cls} border rounded-xl p-5 hover:scale-[1.01] transition-all`;
-        card.innerHTML=`<div class="flex items-center justify-between mb-2"><span class="text-xs font-bold ${s.txt} flex items-center gap-1.5"><i class="${s.icon}"></i> ${a.status}警報</span><span class="text-2xs font-semibold text-slate-400">${a.month}</span></div><h4 class="text-sm font-bold text-white mb-2">${a.dept}</h4><p class="text-xs text-slate-300 leading-relaxed mb-3">${a.description}</p><div class="pt-2.5 border-t border-slate-800 text-2xs leading-relaxed text-slate-400"><strong class="text-slate-300 block mb-0.5"><i class="fa-solid fa-wand-magic-sparkles text-blue-400 mr-1"></i>處置處方：</strong>${a.recommendation}</div>`;
-        c.appendChild(card);
-    });
-}
-
-// ── Table ──────────────────────────────────────────────────────────────────────
-function filterTable(){
-    const q=document.getElementById('table-search').value.toLowerCase();
-    const sf=document.getElementById('table-filter-status').value;
-    const fd=diagnosisData.filter(d=>(d.dept.toLowerCase().includes(q)||d.month.includes(q))&&(sf===''||d.status===sf));
-    document.getElementById('table-count-info').textContent=`顯示 ${fd.length} / ${diagnosisData.length} 筆資料`;
-    const tb=document.getElementById('table-body'); tb.innerHTML='';
-    if(!fd.length){ tb.innerHTML=`<tr><td colspan="9" class="text-center py-8 text-slate-500 text-sm"><i class="fa-solid fa-ban text-lg mb-1.5 block"></i> 沒有符合篩選條件的數據記錄</td></tr>`; return; }
-    const bm={'合理配置':'bg-green-500/10 text-green-400 border-green-500/20','過度加班':'bg-red-500/10 text-red-400 border-red-500/20','配置低效':'bg-amber-500/10 text-amber-400 border-amber-500/20','人力閒置':'bg-yellow-500/10 text-yellow-400 border-yellow-500/20','高效精實':'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'};
-    fd.forEach(row=>{
-        const tr=document.createElement('tr'); tr.className='hover:bg-slate-800/30 transition-colors border-b border-slate-800/40 text-xs';
-        const badge=bm[row.status]||'bg-slate-800/60 text-slate-400 border-slate-700';
-        tr.innerHTML=`<td class="px-5 py-3 font-mono font-medium">${row.month}</td><td class="px-5 py-3 font-bold text-white">${row.dept}</td><td class="px-5 py-3 text-right font-mono">${row.headcount}</td><td class="px-5 py-3 text-right font-mono">${row.overtime.toFixed(1)}h</td><td class="px-5 py-3 text-right font-mono">${row.overtimeAvg.toFixed(1)}h</td><td class="px-5 py-3 text-right font-mono">$${row.output.toLocaleString('zh-TW',{maximumFractionDigits:0})}</td><td class="px-5 py-3 text-right font-mono font-semibold">${row.achievementRate.toFixed(1)}%</td><td class="px-5 py-3 text-right font-mono text-slate-400">${row.overtimeEfficiency.toLocaleString('zh-TW',{maximumFractionDigits:0})}</td><td class="px-5 py-3 text-center"><span class="inline-flex px-2 py-0.5 rounded-full text-2xs font-semibold border ${badge}">${row.status}</span></td>`;
-        tb.appendChild(tr);
-    });
-}
-
-function downloadCSV(){
-    if(!diagnosisData.length) return;
-    let csv='\ufeff月份,部門,人數,加班時數,平均每人加班時數,產值,達標率,加班效率,AI診斷狀態,警報描述,處置建議\n';
-    diagnosisData.forEach(r=>{
-        const d=`"${r.description.replace(/"/g,'""')}"`, rec=`"${r.recommendation.replace(/"/g,'""')}"`;
-        csv+=`${r.month},${r.dept},${r.headcount},${r.overtime.toFixed(1)},${r.overtimeAvg.toFixed(1)},${r.output.toFixed(0)},${r.achievementRate.toFixed(1)}%,${r.overtimeEfficiency.toFixed(0)},${r.status},${d},${rec}\n`;
-    });
-    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-    a.download=`人力配置AI診斷報表_${new Date().toISOString().slice(0,10)}.csv`;
-    a.style.visibility='hidden'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
-</script>
 </body>
 </html>
